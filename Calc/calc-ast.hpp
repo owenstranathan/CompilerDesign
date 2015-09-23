@@ -23,12 +23,14 @@ shall not appear within an expression.
 
 struct visitor;
 struct expr;
+struct digit;
+struct sub;
+struct add;
 struct mod;
 struct div;
 struct mult;
-struct sub;
-struct add;
-struct digit;
+struct term;
+
 
 struct visitor{
     virtual void visit(expr *);
@@ -39,24 +41,21 @@ struct expr{
     virtual void accept(visitor & v) = 0;
 };
 
-struct mod : expr
+struct digit : expr
 {
+    digit(int v): value(v)
+    {}
+
     void accept(visitor & v) { v.visit(this); }
 
-    expr * left;
-    expr * right;
+    int value;
 };
 
-struct div : expr
+struct add : expr
 {
-    void accept(visitor & v) { v.visit(this); }
+    add(expr * l, expr * r) : left(l), right(r)
+    {}
 
-    expr * left;
-    expr * right;
-};
-
-struct mult : expr
-{
     void accept(visitor & v) { v.visit(this); }
 
     expr * left;
@@ -65,26 +64,48 @@ struct mult : expr
 
 struct sub : expr
 {
+    sub(expr * l, expr * r) : left(l), right(r)
+    {}
+
     void accept(visitor & v) { v.visit(this); }
 
     expr * left;
     expr * right;
 };
 
-struct add : expr
+struct mult : expr
 {
+    mult(expr * l, expr * r) : left(l), right(r)
+    {}
+
     void accept(visitor & v) { v.visit(this); }
 
     expr * left;
     expr * right;
 };
 
-struct digit : expr
+struct div : expr
 {
+    div(expr * l, expr * r) : left(l), right(r)
+    {}
+
     void accept(visitor & v) { v.visit(this); }
 
-    int value;
+    expr * left;
+    expr * right;
 };
+
+struct mod : expr
+{
+    mod(expr * l, expr * r) : left(l), right(r)
+    {}
+
+    void accept(visitor & v) { v.visit(this); }
+
+    expr * left;
+    expr * right;
+};
+
 
 
 #endif
