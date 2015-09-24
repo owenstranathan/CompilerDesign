@@ -18,8 +18,8 @@ shall not appear within an expression.
 
 */
 
-#ifndef CALC-AST_HPP
-#define CALC-AST_HPP
+#ifndef CALC_AST_HPP
+#define CALC_AST_HPP
 
 struct visitor;
 struct expr;
@@ -27,13 +27,19 @@ struct digit;
 struct sub;
 struct add;
 struct mod;
-struct div;
+struct divide;
 struct mult;
 struct term;
 
 
 struct visitor{
-    virtual void visit(expr *);
+    virtual void visit(digit *) = 0;
+    virtual void visit(add *) = 0;
+    virtual void visit(sub *) = 0;
+    virtual void visit(mult *) = 0;
+    virtual void visit(divide *) = 0;
+    virtual void visit(mod *) = 0;
+
 
 };
 
@@ -84,9 +90,9 @@ struct mult : expr
     expr * right;
 };
 
-struct div : expr
+struct divide : expr
 {
-    div(expr * l, expr * r) : left(l), right(r)
+    divide(expr * l, expr * r) : left(l), right(r)
     {}
 
     void accept(visitor & v) { v.visit(this); }
@@ -105,6 +111,14 @@ struct mod : expr
     expr * left;
     expr * right;
 };
+
+////////////////////////////////////////////////////////////////////////////////
+//Functions/////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// void print_expr(expr *);
+//
+// void print_ast(expr *);
 
 
 
