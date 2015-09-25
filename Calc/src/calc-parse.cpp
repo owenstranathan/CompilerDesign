@@ -20,73 +20,72 @@ digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 “‘
 #include <stdexcept>
 #include "calc-ast.hpp"
 #include "calc-eval.hpp"
+#include "calc-parse.hpp"
 
 
 using namespace std;
 
-int main()
+
+expr * calc_parse::parse_expr()
 {
-    char * input = getInput();
-    printf("%s",input);
-    expr* ast = parse_expr(input);
-    cout << eval(ast) << endl;
-    return 0;
-}
-
-
-
-
-expr * calc_parser::parse_expr(char * input)
-{
-
-    expr * e1 = parse_factor(input);
-
-    if(*input == '+')
+    expr * e1 = parse_factor(NULL);
+    expr * e2;
+    while(iter != input.end())
     {
-        ++input;
-
-        expr * e2 = parse_factor(input);
-        return new add(e1, e2);
+        if(lookahead == '+')
+        {
+            next();
+            e2 = parse_factor(NULL);
+            e1 = new add(e1, e2);
+        }
+        else if(lookahead == '-')
+        {
+            next();
+            e2 = parse_factor(NULL);
+            e1 = new sub(e1, e2);
+        }
+        else if(lookahead == ')')
+        {
+            next();
+        }
+        else
+        {
+            // cout << ((iter == input.end()) ? "true" : "false")  << endl;
+            e1 = parse_factor(e1);
+        }
     }
-    else if(*input == '-')
-    {
-        ++input;
-
-        expr * e2 = parse_factor(input);
-        return new sub(e1, e2);
-    }
-    else
-    {
-        return parse_factor(input);
-    }
+    return e1;
 
 
 }
 
-expr * calc_parser::parse_factor(char * input)
+expr * calc_parse::parse_factor( expr * e1 = NULL)
 {
 
-    expr * e1 = parse_term(input);
 
-    if(*input == '*')
+    // cout << "We got in parse_factor the value of lookahead is : '" << lookahead <<"'"<<endl;
+    if(e1 == NULL)
     {
-        ++input;
-
-        expr * e2 = parse_term(input);
+        e1 = parse_term();
+    }
+    // cout << lookahead << endl;
+    // cout << "lookahead == '/' --> " << ((lookahead == '/') ? "true" : "false") << endl;
+    if(lookahead == '*')
+    {
+        next();
+        expr * e2 = parse_term();
         return new mult(e1, e2);
     }
-    else if(*input == '/')
+    else if(lookahead == '/' || lookahead == 47)
     {
-        ++input;
-
-        expr * e2 = parse_term(input);
+        next();
+        expr * e2 = parse_term();
         return new divide(e1, e2);
     }
-    else if(*input == '%')
+    else if(lookahead == '%')
     {
-        ++input;
-
-        expr * e2 = parse_term(input);
+        next();
+        expr * e2 = parse_term();
         return new mod(e1, e2);
     }
     else
@@ -96,27 +95,31 @@ expr * calc_parser::parse_factor(char * input)
 
 }
 
-expr * calc_parser::parse_term(char * input)
+expr * calc_parse::parse_term()
 {
-    cout << "In term" << endl;
-    if(*input == '(')
+    // cout << "We got in parse_term the value of lookahead is : " << lookahead << endl;
+    if(lookahead == '(')
     {
-        ++input;
-        return parse_expr(input);
+        next();
+        return parse_expr();
     }
-    else if(isdigit(*input))
+    else if(isdigit(lookahead))
     {
-        cout << "The input is " << *input << endl;
-        expr * dig = new digit(*input);
-        input+=1;
-        cout << *input << endl;
+        //atoi() is being a dick so I just did a straight ascii conversion
+        expr * dig = new digit(lookahead-48);
+        next();
         return dig;
     }
-    else throw logic_error("Invalid syntax! Line 118");
+    else throw logic_error("Invalid syntax!");
 
 }
 
-void calc_parser::next()
+void calc_parse::next()
 {
-    while(lookahead == ' ' || lookahead == '\t')
+    do
+    {
+        ++iter;
+        lookahead = *iter;
+    }while((lookahead == ' ' || lookahead == '\t') && iter != input.end());
+
 }

@@ -8,4 +8,4 @@ cmake_minimum_required(VERSION 2.8)
 set( CMAKE_CXX_FLAGS "-Wall -Werror -std=c++11")
 
 #executable
-add_executable(calc ../src/calc-ast.cpp ../src/calc-parse.cpp ../src/calc-eval.cpp)
+add_executable(calc ../src/main.cpp ../src/calc-ast.cpp ../src/calc-parse.cpp ../src/calc-eval.cpp)
