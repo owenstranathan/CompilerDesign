@@ -11,9 +11,16 @@ int main()
 
     while(getline(cin, input))
     {
-        calc_parse parser(input);
-        expr * ast = parser.parse();
-        cout << eval(ast) << endl;;
+        try
+        {
+            calc_parse parser(input);
+            expr * ast = parser.parse();
+            cout << eval(ast) << endl;;
+        }
+        catch(std::logic_error error)
+        {
+            std::cout << "Invalid syntax!" << std::endl;
+        }
     }
     return 0;
 }

@@ -15,10 +15,10 @@ add_executable(calc_eval ../src/eval.cpp
 
 add_executable(s_expr ../src/s_expr.cpp
                     ../src/calc-parse.cpp
-                    ../src/calc-print/cpp
+                    ../src/calc-print.cpp
 )
 
 add_executable(post_fix ../src/post_fix.cpp
                     ../src/calc-parse.cpp
-                    ../src/calc-print/cpp
+                    ../src/calc-print.cpp
 )

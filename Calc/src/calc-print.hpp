@@ -52,4 +52,5 @@ inline void post_fix_print(expr * e)
 {
     std::cout << post_print(e) << std::endl;
 }
+
 #endif

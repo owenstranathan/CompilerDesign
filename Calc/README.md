@@ -1,5 +1,4 @@
-#The Greatest of all Calculators
-####by Owen Stranathan
+#The Greatest of all Calculators!!!!!
 Calc is a simple calculator language compiler that take's as input math
 expressions written to conform with the following concrete grammar:
 
