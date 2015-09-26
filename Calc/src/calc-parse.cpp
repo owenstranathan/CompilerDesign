@@ -6,10 +6,25 @@ and constructs an ast for evaluation
 
 NOTE:
 
+The concrete grammar:
+
 expr -> expr + factor | expr - factor | factor
 factor -> factor * term | factor / term | factor % term | term
 term -> digit | ( expr )
 digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 “‘
+
+
+The abstract grammar:
+
+expression ->   expr + expr
+                expr - expr
+                expr * expr
+                expr / expr
+                expr % expr
+                digit -> 0|1|2|3|4|5|6|7|8|9
+
+
+BAD SYNTAX will cause the parser to throw a std::logic_error deal with it!
 
 */
 

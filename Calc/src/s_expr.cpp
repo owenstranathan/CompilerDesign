@@ -1,3 +1,5 @@
+//Simple program to demonstrait s_expressions
+
 #include "calc-print.hpp"
 #include "calc-parse.hpp"
 #include <iostream>

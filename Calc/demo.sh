@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# a simple bash script for running tests on calc
+# can take a test file as input and will run tests on
+# that file
+
 function pause()
 {
     read -p "$*"
