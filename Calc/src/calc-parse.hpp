@@ -9,7 +9,7 @@
 struct calc_parse
 {
 
-    inline expr * parse() { return parse_expr(); }
+    expr * parse() { return parse_expr(); }
     expr * parse_expr();
     expr * parse_factor(expr * e1);
     expr * parse_term();
