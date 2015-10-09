@@ -1,11 +1,11 @@
 #The Greatest of all Calculators!!!!!
-Calc is an extension of the simple calculator language compiler found in the Calc directory
+ExtCalc is an extension of the simple calculator language compiler found in the Calc directory
 
 ##Build
 
 To build the code run the following:
 
-'./build.sh'
+`./build.sh`
 
 That will configure cmake,
 and run make
