@@ -1,4 +1,4 @@
-#The Greatest of all Calculators!!!!!
+#Extended Calculator (a Calculator with integer and boolean types)
 ExtCalc is an extension of the simple calculator language compiler found in the Calc directory
 
 ##Build
