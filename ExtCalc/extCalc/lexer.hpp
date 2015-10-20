@@ -7,8 +7,6 @@
 
 #include "token.hpp"
 
-//TODO: implement getTokenStream to actually call tokenize and return a token stream
-//Booble-di-do!
 
 class lexer
 {
