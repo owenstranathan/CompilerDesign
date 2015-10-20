@@ -7,6 +7,9 @@
 
 #include "token.hpp"
 
+//TODO: implement getTokenStream to actually call tokenize and return a token stream
+//Booble-di-do!
+
 class lexer
 {
 public:
@@ -20,8 +23,8 @@ private:
 
     void tokenize();
 
-    void tokenize_int();
-    void tokenize_bool();
+    void tokenizeInt();
+    void tokenizeBool();
 
     bool eof() { return iter == in.end()}
 

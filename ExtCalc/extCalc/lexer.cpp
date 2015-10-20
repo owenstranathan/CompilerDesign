@@ -3,17 +3,25 @@
 #include <algorithm>
 #include <stdexcept>
 
+
+token_stream lexer::getTokenStream()
+{
+    tokenize();
+    return token_stream(tokens);
+}
+
+
 void lexer::tokenize()
 {
     while(!eof())
     {
         if(std::isalpha(lookahead))
         {
-            tokenize_bool();
+            tokenizeBool();
         }
         else if(std::isdigit(lookahead))
         {
-            tokenize_int(lookahead);
+            tokenizeInt(lookahead);
         }
         else
         {
@@ -120,7 +128,7 @@ void lexer::tokenize()
 
 }
 
-void tokenize_bool()
+void tokenizeBool()
 {
     assert(std::isalpha(lookahead));
     std::string s(lookahead);
@@ -145,7 +153,7 @@ void tokenize_bool()
 
 }
 
-void lexer::tokenize_int()
+void lexer::tokenizeInt()
 {
     assert(std::isdigit(lookahead));
     std::string s(lookahead);
