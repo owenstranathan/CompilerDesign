@@ -4,6 +4,9 @@
 #ifndef PRELUDE_HPP
 #define PRELUDE_HPP
 
+#include <cassert>
+
+
 //---------------------// Visitors //---------------------//
 
 struct type_visitor;

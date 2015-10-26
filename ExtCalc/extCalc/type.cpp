@@ -1,1 +1,1 @@
-#include "type.cpp"
+#include "type.hpp"

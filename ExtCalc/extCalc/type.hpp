@@ -1,7 +1,7 @@
 #ifndef TYPE_HPP
 #define TYPE_HPP
 
-#include "prelude.hpp"
+#include "visitor.hpp"
 
 
 struct type
@@ -13,12 +13,12 @@ struct type
 
 struct bool_type : type
 {
-    void accept( type_visitor & v ) { v.visit(this) }
+    void accept( type_visitor & v ) const { v.visit(this); }
 };
 
 struct int_type : type
 {
-    void accept( type_visitor & v ) { v.visit(this) }
+    void accept( type_visitor & v ) const { v.visit(this); }
 };
 
 

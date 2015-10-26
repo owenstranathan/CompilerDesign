@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-
 token_stream lexer::getTokenStream()
 {
     tokenize();
@@ -21,7 +20,7 @@ void lexer::tokenize()
         }
         else if(std::isdigit(lookahead))
         {
-            tokenizeInt(lookahead);
+            tokenizeInt();
         }
         else
         {
@@ -34,10 +33,10 @@ void lexer::tokenize()
                     tokens.push_back(token(r_paren, ")"));
                 break;
                 case '+':
-                    tokens.push_back(token(plus, ));
+                    tokens.push_back(token(plus, "+"));
                 break;
                 case '-':
-                    tokens.push_back(token(minus , "-");
+                    tokens.push_back(token(minus , "-"));
                 break;
                 case '*':
                     tokens.push_back(token(star , "*"));
@@ -46,7 +45,7 @@ void lexer::tokenize()
                     tokens.push_back(token(slash , "/"));
                 break;
                 case '%':
-                    tokens.push_back(token(percent , "%");
+                    tokens.push_back(token(percent , "%"));
                 break;
                 case '&':
                     next();
@@ -56,7 +55,10 @@ void lexer::tokenize()
                     }
                     else
                     {
-                        throw std::invalid_input();
+                        std::string error = "Unknown identifier ";
+                        error += lookahead;
+                        error += " in && lex";
+                        throw std::invalid_argument(error.c_str());
                     }
                 break;
                 case '|':
@@ -67,7 +69,10 @@ void lexer::tokenize()
                     }
                     else
                     {
-                        throw std::invalid_input();
+                        std::string error = "Unknown identifier ";
+                        error += lookahead;
+                        error += " in || lex";
+                        throw std::invalid_argument(error.c_str());
                     }
                 break;
                 case '>':
@@ -100,7 +105,10 @@ void lexer::tokenize()
                     }
                     else
                     {
-                        throw std::invalid_input();
+                        std::string error = "Unknown identifier ";
+                        error += lookahead;
+                        error += " in == lex";
+                        throw std::invalid_argument(error.c_str());
                     }
                 break;
                 case '!':
@@ -118,8 +126,15 @@ void lexer::tokenize()
                 break;
                 case '\t':
                 break;
+                case '\n':
+                break;
+                case '\0':
+                break;
                 default:
-                    throw std::invalid_input();
+                    std::string error = "Unknown identifier ";
+                    error += lookahead;
+                    error += " in default lex";
+                    throw std::invalid_argument(error.c_str());
                 break;
             }
             next();
@@ -128,10 +143,11 @@ void lexer::tokenize()
 
 }
 
-void tokenizeBool()
+void lexer::tokenizeBool()
 {
     assert(std::isalpha(lookahead));
-    std::string s(lookahead);
+    std::string s = "";
+    s += lookahead;
     next();
     while(std::isalpha(lookahead))
     {
@@ -148,7 +164,10 @@ void tokenizeBool()
     }
     else
     {
-        throw std::invalid_input();
+        std::cout << s << std::endl;
+        std::string error = "Unknown identifier " + s;
+        error += " in bool lex";
+        throw std::invalid_argument(error.c_str());
     }
 
 }
@@ -156,7 +175,8 @@ void tokenizeBool()
 void lexer::tokenizeInt()
 {
     assert(std::isdigit(lookahead));
-    std::string s(lookahead);
+    std::string s = "";
+    s+=lookahead;
     next();
     while(std::isdigit(lookahead))
     {

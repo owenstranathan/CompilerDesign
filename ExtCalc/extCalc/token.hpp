@@ -1,7 +1,6 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
-#include "prelude.hpp"
 #include "ast.hpp"
 
 #include <string>
@@ -9,7 +8,7 @@
 #include <iostream>
 
 //Enum to simplify token type analysis
-enum token_ype
+enum token_type
 {
     integer,    // integer
     l_paren,    // (
@@ -28,7 +27,7 @@ enum token_ype
     gt_eq,      // >=
     lt_eq,      // <=
     eq_eq,      // ==
-    bang_eq     // !=
+    bang_eq,    // !=
     bang        // !
 };
 
@@ -39,7 +38,7 @@ struct token
 
     token_type type;
     std::string value;
-}
+};
 
 
 using token_list = std::vector<token>;
@@ -56,24 +55,25 @@ public:
     {}
 
     token_stream(token_list & tokens)
-    : token_stream(tokens.data(), tokens.data + tokens.size())
+    : token_stream(tokens.data(), tokens.data() + tokens.size())
     {}
 
 
     //Access functions and others
 
     bool eof() const { return first_ == last_; }
-    const token & peek();
-    const token & get();
-    const token & last() { return *(last_ - 1); }
+    token & peek();
+    token & get();
+    token & last() { return *(last_ - 1); }
 
-    const token * begin() { return t_vec.begin(); }
-    const token * end() { return t_vec.end(); }
+    token * begin() { return &(*t_vec.begin());}
+    token * end() { return &(*t_vec.end()); }
 
 private:
     token * first_;
     token * last_;
-}
+    token_list t_vec;
+};
 
 
 
