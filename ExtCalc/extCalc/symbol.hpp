@@ -5,9 +5,7 @@
 #include <unordered_map>
 
 #include "prelude.hpp"
-//#include "token.hpp"
-
-enum token_type : short;
+#include "token.hpp"
 
 //-------------------symbol-------------------//
 
@@ -59,12 +57,12 @@ class symbol_table: std::unordered_map<std::string, symbol*>
 {
     ~symbol_table();
 
-    //template<typename T, typename...Args>
-    //symbol * insert(std::string& , Args&& ...); //put a new symbol in the table
+    template<typename T, typename...Args>
+    symbol * insert(std::string& , Args&& ...); //put a new symbol in the table
 
     symbol * operator[](std::string); //get a symbole from the table
 };
-/*
+
 //Basically all of this is from Dr. Sutton I give him full credit
 //I could have done it my own way but this much cooler.
 //So this is some cool ass shit I found in Dr.Sutton's calc
@@ -97,6 +95,6 @@ symbol_table::insert(std::string& text, Args&& ...args)
     //return the symbol ptr
     return iter->second;
 }
-*/
+
 
 #endif
