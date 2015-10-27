@@ -17,6 +17,8 @@ struct expr
 
 struct unary_expr : expr
 {
+    virtual ~unary_expr()
+    { }
     unary_expr(expr * e)
     : only(e)
     { }

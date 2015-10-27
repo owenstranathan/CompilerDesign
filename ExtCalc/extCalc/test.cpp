@@ -1,5 +1,4 @@
 #include "lexer.hpp"
-#include "token.hpp"
 #include <iostream>
 #include <string>
 #include <stdexcept>

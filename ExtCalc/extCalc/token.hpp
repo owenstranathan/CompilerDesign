@@ -1,14 +1,16 @@
 #ifndef TOKEN_HPP
 #define TOKEN_HPP
 
+#include "prelude.hpp"
 #include "ast.hpp"
+//#include "symbol.hpp"
 
 #include <string>
 #include <vector>
 #include <iostream>
 
 //Enum to simplify token type analysis
-enum token_type
+enum token_type : short
 {
     integer,    // integer
     l_paren,    // (
@@ -62,7 +64,7 @@ public:
     //Access functions and others
 
     bool eof() const { return first_ == last_; }
-    token & peek();
+    token & peek() const;
     token & get();
     token & last() { return *(last_ - 1); }
 
@@ -77,5 +79,17 @@ private:
 
 
 
+token & token_stream::peek() const
+{
+    assert(!eof());
+    return *first_;
+}
 
+token& token_stream::get()
+{
+    assert(!eof());
+    token & tok = *first_;
+    ++first_;
+    return tok;
+}
 #endif
