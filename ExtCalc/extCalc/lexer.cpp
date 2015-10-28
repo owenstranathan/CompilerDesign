@@ -15,127 +15,49 @@ void lexer::tokenize()
     while(!eof())
     {
         if(std::isalpha(lookahead))
-        {
-            tokenizeBool();
-        }
+            Bool();
         else if(std::isdigit(lookahead))
-        {
-            tokenizeInt();
-        }
+            Int();
         else
         {
             switch (lookahead)
             {
-                case '(':
-                    tokens.push_back(token(l_paren, "("));
-                break;
-                case ')':
-                    tokens.push_back(token(r_paren, ")"));
-                break;
-                case '+':
-                    tokens.push_back(token(plus, "+"));
-                break;
-                case '-':
-                    tokens.push_back(token(minus , "-"));
-                break;
-                case '*':
-                    tokens.push_back(token(star , "*"));
-                break;
-                case '/':
-                    tokens.push_back(token(slash , "/"));
-                break;
-                case '%':
-                    tokens.push_back(token(percent , "%"));
-                break;
+                case '(': on_token(); break;
+                case ')': on_token(); break;
+                case '+': on_token(); break;
+                case '-': on_token(); break;
+                case '*': on_token(); break;
+                case '/': on_token(); break;
+                case '%': on_token(); break;
                 case '&':
                     next();
-                    if(lookahead == '&')
-                    {
-                        tokens.push_back(token(amp_amp , "&&"));
-                    }
-                    else
-                    {
-                        std::string error = "Unknown identifier ";
-                        error += lookahead;
-                        error += " in && lex";
-                        throw std::invalid_argument(error.c_str());
-                    }
-                break;
+                    ((lookahead == '&') ? on_token("&&") : error());
+                    break;
                 case '|':
                     next();
-                    if(lookahead == '|')
-                    {
-                        tokens.push_back(token(bar_bar , "||"));
-                    }
-                    else
-                    {
-                        std::string error = "Unknown identifier ";
-                        error += lookahead;
-                        error += " in || lex";
-                        throw std::invalid_argument(error.c_str());
-                    }
-                break;
+                    ((lookahead == '|') ? on_token("||") : error());
+                    break;
                 case '>':
                     next();
-                    if(lookahead == '=')
-                    {
-                        tokens.push_back(token(gt_eq, ">="));
-                    }
-                    else
-                    {
-                        tokens.push_back(token(gt, ">"));
-                    }
-                break;
+                    ((lookahead == '=') ? on_token(">=") : on_token(">"));
+                    break;
                 case '<':
                     next();
-                    if(lookahead == '=')
-                    {
-                        tokens.push_back(token(lt_eq, "<="));
-                    }
-                    else
-                    {
-                        tokens.push_back(token(lt, "<"));
-                    }
-                break;
+                    ((lookahead == '=') ? on_token("<=") : on_token("<"));
+                    break;
                 case '=':
                     next();
-                    if(lookahead == '=')
-                    {
-                        tokens.push_back(token(eq_eq, "=="));
-                    }
-                    else
-                    {
-                        std::string error = "Unknown identifier ";
-                        error += lookahead;
-                        error += " in == lex";
-                        throw std::invalid_argument(error.c_str());
-                    }
-                break;
+                    ((lookahead == '=') ? on_token("==") : error());
+                    break;
                 case '!':
                     next();
-                    if(lookahead == '=')
-                    {
-                        tokens.push_back(token(bang_eq, "!="));
-                    }
-                    else
-                    {
-                        tokens.push_back(token(bang, "!"));
-                    }
-                break;
-                case ' ':
-                break;
-                case '\t':
-                break;
-                case '\n':
-                break;
-                case '\0':
-                break;
-                default:
-                    std::string error = "Unknown identifier ";
-                    error += lookahead;
-                    error += " in default lex";
-                    throw std::invalid_argument(error.c_str());
-                break;
+                    ((lookahead == '=') ? on_token("!=") : on_token("!"));
+                    break;
+                case ' ': break;
+                case '\t': break;
+                case '\n': break;
+                case '\0': break;
+                default: error(); break;
             }
             next();
         }
@@ -143,7 +65,41 @@ void lexer::tokenize()
 
 }
 
-void lexer::tokenizeBool()
+void lexer::on_token()
+{
+    //just look up the symbol in the symbol table and construct a new token
+    // in the token list
+    std::string t(1, lookahead);
+    symbol* sym = sym_tab[t];
+    if(sym != nullptr)
+        push_token(sym);
+    else
+    {
+        std::string err = "Unknown symbol ";
+        err += lookahead;
+        throw std::out_of_range(err);
+    }
+}
+
+//for optional two character tokens called from tokenize in switch statement
+void lexer::on_token(std::string t)
+{
+    symbol* sym = sym_tab[t];
+    if(sym != nullptr)
+        push_token(sym);
+    else
+    {
+        std::string err = "Unknown symbol ";
+        err += t;
+        throw std::out_of_range(err);
+    }
+}
+
+void lexer::push_token(symbol* sym)
+{
+    tokens.push_back(token(sym->tok(), sym));
+}
+void lexer::Bool()
 {
     assert(std::isalpha(lookahead));
     std::string s = "";
@@ -155,24 +111,14 @@ void lexer::tokenizeBool()
         next();
     }
     if(s == "true")
-    {
-        tokens.push_back(token(true_true , s));
-    }
+        on_token("true");
     else if(s == "false")
-    {
-        tokens.push_back(token(tricksy , s));
-    }
+        on_token("false");
     else
-    {
-        std::cout << s << std::endl;
-        std::string error = "Unknown identifier " + s;
-        error += " in bool lex";
-        throw std::invalid_argument(error.c_str());
-    }
-
+        error(s);
 }
 
-void lexer::tokenizeInt()
+void lexer::Int()
 {
     assert(std::isdigit(lookahead));
     std::string s = "";
@@ -180,15 +126,30 @@ void lexer::tokenizeInt()
     next();
     while(std::isdigit(lookahead))
     {
-        s += lookahead;
+
+        s+=lookahead;
         next();
     }
-    tokens.push_back(token(integer, s));
+    symbol * sym = sym_tab.insert<int_symbol>(s, &s, integer);
+    push_token(sym);
+}
+
+void lexer::error()
+{
+    std::string error = "Unknown identifier ";
+    error += lookahead;
+    throw std::invalid_argument(error.c_str());
+
+}
+void lexer::error(std::string s)
+{
+    std::string error = "Unknown identifier ";
+    error += s;
+    throw std::invalid_argument(error.c_str());
 }
 
 void lexer::next()
 {
-    assert(!eof());
     ++iter;
     lookahead = *iter;
 }

@@ -1,10 +1,9 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-//#include "prelude.hpp"
-//#include "lexer.hpp"
+#include "prelude.hpp"
+#include "lexer.hpp"
 
-/*
 
 class parser
 {
@@ -44,5 +43,5 @@ private:
     token_stream tokens;
 
 };
-*/
+
 #endif

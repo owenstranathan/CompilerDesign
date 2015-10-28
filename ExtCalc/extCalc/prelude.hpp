@@ -7,6 +7,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <typeinfo>
+#include <iostream>
 
 
 //---------------------// Visitors //---------------------//

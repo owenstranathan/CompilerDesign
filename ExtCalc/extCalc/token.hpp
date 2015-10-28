@@ -3,14 +3,16 @@
 
 #include "prelude.hpp"
 #include "ast.hpp"
-//#include "symbol.hpp"
+
 
 #include <string>
 #include <vector>
 #include <iostream>
 
+struct symbol;
+
 //Enum to simplify token type analysis
-enum token_type : short
+enum token_type
 {
     integer,    // integer
     l_paren,    // (
@@ -35,11 +37,13 @@ enum token_type : short
 
 struct token
 {
-    token(token_type t, std::string v) : type(t), value(v)
+    token(token_type t, symbol * s) : type(t), sym_(s)
     {}
 
+    symbol const * Symbol() { return sym_;}
+
     token_type type;
-    std::string value;
+    symbol * sym_;
 };
 
 
@@ -78,13 +82,14 @@ private:
 };
 
 
-
+inline
 token & token_stream::peek() const
 {
     assert(!eof());
     return *first_;
 }
 
+inline
 token& token_stream::get()
 {
     assert(!eof());
@@ -92,4 +97,5 @@ token& token_stream::get()
     ++first_;
     return tok;
 }
+
 #endif
