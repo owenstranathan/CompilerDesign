@@ -9,17 +9,18 @@ function pause()
     read -p "$*"
 }
 
+
 echo "Now running tests for Extended Calc";
 
 if [ -z ${1+x} ];
     then
-        echo "Using test input from file 'test/input/test-file1.txt'";
+        echo "Using test input from file 'test1.txt'";
         echo "Input is: ";
-        cat test/input/test-file1.txt;
+        cat test/test1.txt;
         pause "Press [Enter] key to continue...";
 
         echo "Translating and evaluating input...";
-        ./build/ext_calc_eval < test/input/test-file1.txt;
+        ./build/ext_calc_eval < test/test1.txt;
         pause "Press [Enter] to quit...";
 
     else

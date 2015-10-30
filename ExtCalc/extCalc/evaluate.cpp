@@ -55,13 +55,13 @@ void eval_visitor::visit(const mod_expr * e)
 
 void eval_visitor::visit(const and_expr * e)
 {
-    int_value = bool_evaluate(e->first) && bool_evaluate(e->second);
+    bool_value = bool_evaluate(e->first) && bool_evaluate(e->second);
 }
 
 
 void eval_visitor::visit(const or_expr * e)
 {
-    int_value = bool_evaluate(e->first) || bool_evaluate(e->second);
+    bool_value = bool_evaluate(e->first) || bool_evaluate(e->second);
 }
 
 
