@@ -12,4 +12,4 @@ file(GLOB extCalcLib
     "../extCalc/*.cpp"
 )
 
-add_executable(test ${extCalcLib})
+add_executable(ext_calc_eval ${extCalcLib})
