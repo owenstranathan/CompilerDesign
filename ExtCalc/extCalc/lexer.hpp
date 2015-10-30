@@ -31,7 +31,7 @@ private:
     void error();
     void error(std::string);
 
-    void push_token(symbol *);
+    void push_token(symbol *, std::string spelling);
 
     bool eof() {
         return lookahead == *input.end();

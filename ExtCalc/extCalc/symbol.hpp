@@ -38,7 +38,7 @@ class symbol_table: std::unordered_map<std::string, symbol*>
 {
 public:
     //Destructor
-    ~symbol_table();
+    //~symbol_table();
 
     //preinstalls symbols in the lexical grammar
     void install();
@@ -65,13 +65,13 @@ symbol_table::insert(std::string& text, token_type tok)
     //return the symbol ptr
     return iter->second;
 }
-
+/*
 inline
 symbol_table::~symbol_table()
 {
     for(auto pair : *this)
         delete pair.second;
 }
-
+*/
 
 #endif

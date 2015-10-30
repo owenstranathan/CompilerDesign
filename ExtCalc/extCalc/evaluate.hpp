@@ -5,11 +5,10 @@
 #include "visitor.hpp"
 #include "ast.hpp"
 
-/*
 struct eval_visitor : expr_visitor
 {
     // Unary
-    void visit(const pos_expr *); // + {expr}
+    void visit(const pos_expr *);// + {expr}
     void visit(const neg_expr *); // - {expr}
     void visit(const not_expr *); // ! {expr}
 
@@ -32,9 +31,16 @@ struct eval_visitor : expr_visitor
     void visit(const int_expr *); // int
     void visit(const bool_expr *); // bool
 
-    int value;
+    int int_value;
+    bool bool_value;
 
 };
-*/
+
+
+
+int int_evaluate(expr * ast);
+
+bool bool_evaluate(expr * ast);
+
 
 #endif

@@ -37,14 +37,16 @@ enum token_type
 
 struct token
 {
-    token() : type(integer), sym_(nullptr)
+    token() : type(integer), spelling("0"), sym_(nullptr)
     {}
-    token(token_type t, symbol * s) : type(t), sym_(s)
+    token(token_type t, std::string spell, symbol * s) : type(t), spelling(spell), sym_(s)
     {}
 
     symbol const * Symbol() { return sym_; }
+    std::string const & spell() { return spelling; }
 
     token_type type;
+    std::string spelling;
     symbol * sym_;
 };
 
@@ -68,6 +70,7 @@ public:
 
     token_stream(token_list & tokens) : t_vec(tokens), lookahead(t_vec.begin())
     {}
+
     //Access functions and others
 
     bool eof() const { return lookahead == t_vec.end(); }

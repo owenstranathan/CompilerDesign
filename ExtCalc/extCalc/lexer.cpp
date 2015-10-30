@@ -72,7 +72,7 @@ void lexer::on_token()
     std::string t(1, lookahead);
     symbol* sym = sym_tab[t];
     if(sym != nullptr)
-        push_token(sym);
+        push_token(sym, t);
     else
     {
         std::string err = "Unknown symbol ";
@@ -86,7 +86,7 @@ void lexer::on_token(std::string t)
 {
     symbol* sym = sym_tab[t];
     if(sym != nullptr)
-        push_token(sym);
+        push_token(sym, t);
     else
     {
         std::string err = "Unknown symbol ";
@@ -95,9 +95,9 @@ void lexer::on_token(std::string t)
     }
 }
 
-void lexer::push_token(symbol* sym)
+void lexer::push_token(symbol* sym, std::string spelling)
 {
-    tokens.push_back(token(sym->tok(), sym));
+    tokens.push_back(token(sym->tok(), spelling, sym));
 }
 void lexer::Bool()
 {
@@ -131,7 +131,7 @@ void lexer::Int()
         next();
     }
     symbol * sym = sym_tab.insert(s, integer);
-    push_token(sym);
+    push_token(sym, s);
 }
 
 void lexer::error()

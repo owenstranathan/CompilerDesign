@@ -1,7 +1,9 @@
 #include "lexer.hpp"
 #include "symbol.hpp"
 #include "parser.hpp"
-//#include "elaborate.hpp"
+#include "elaborate.hpp"
+#include "util.hpp"
+#include "evaluate.hpp"
 
 #include <iostream>
 #include <string>
@@ -22,13 +24,29 @@ int main()
         {
             lexer lex(input, sym_tab);
             token_stream ts = lex.getTokenStream();
-            //parser par(ts, sym_tab);
+            parser par(ts, sym_tab);
             //par.parse();
-            while(!ts.eof())
-            {
-                cout << ts.get().Symbol()->spelling() << " ";
+            expr* ast = par.parse();
+            type * the_type = elaborate(ast);
+            if(the_type != nullptr){
+                std::string t = get_type_type(the_type);
+                if(t == "int")
+                {
+                    std::cout << int_evaluate(ast) << std::endl;
+                }
+                else if(t == "bool")
+                {
+                    if(bool_evaluate(ast))
+                        std::cout << "true" << std::endl;
+                    else
+                        std::cout << "false" << std::endl;
+                }
+                else
+                {
+                    throw std::logic_error("WTF Happened?!?!?");
+                }
             }
-            cout << endl;
+
         }
     }
     catch(exception& err)

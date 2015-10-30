@@ -4,14 +4,16 @@
 #include <string>
 #include <vector>
 
-#include "expression.hpp"
+#include "prelude.hpp"
 #include "visitor.hpp"
-#include "type.hpp"
-#include "util.hpp"
+#include "ast.hpp"
 
 
 struct elaboration_visitor : expr_visitor
 {
+    elaboration_visitor() : the_type(nullptr)
+    {}
+
     // Unary
     void visit(const pos_expr *);
     void visit(const neg_expr *);
@@ -33,34 +35,24 @@ struct elaboration_visitor : expr_visitor
     void visit(const nequ_expr * e){ on_binary("!=", "bool", e); }
 
     //Literal
-    void visit(const int_expr *) { the_type = new int_type(); }
-    void visit(const bool_expr *){ the_type = new bool_type(); }
+    void visit(const int_expr *);
+    void visit(const bool_expr *);
 
     void on_binary(std::string op, std::string typ, const binary_expr * b);
 
+    std::string error_message(std::string message);
+
+
     type * the_type;
     std::vector<std::string> errors;
+
+
 };
 
 
-std::string error(std::string message)
-{
-
-    std::string err = "Malformed syntax: no known elaboration of expression with type : ";
-    err += message;
-    err += " stopping translatlation!";
-    return err;
-}
 
 
-
-type * elaborate(expr* ast)
-{
-    elaboration_visitor v;
-    ast->accept(v);
-    return v.the_type;
-}
-
+type * elaborate(expr * ast);
 
 
 #endif

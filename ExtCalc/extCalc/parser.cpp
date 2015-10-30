@@ -4,7 +4,6 @@
 //expr -> logical_or_expression
 expr* parser::expression()
 {
-    std::cout << "In expression" << std::endl;
     return logical_or();
 }
 
@@ -14,7 +13,6 @@ logical_or_expression-> logical_or_expression '||' logical_and_expression
 */
 expr* parser::logical_or()
 {
-    std::cout << "logical_or" << std::endl;
     expr* e1 = logical_and();
     while(!tokens.eof())
     {
@@ -239,7 +237,7 @@ expr * parser::primary()
             return new bool_expr(false);
         case integer:
             i = match_and_return(integer);
-            val = std::stoi(i.Symbol()->spelling());
+            val = std::stoi(i.spell());
             return new int_expr(val);
         default:
             throw std::runtime_error("Expected primary expression");

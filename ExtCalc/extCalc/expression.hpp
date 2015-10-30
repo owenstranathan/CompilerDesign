@@ -3,7 +3,6 @@
 
 #include "prelude.hpp"
 #include "visitor.hpp"
-#include "symbol.hpp"
 
 //---------------------// Papa Expression //---------------------//
 
