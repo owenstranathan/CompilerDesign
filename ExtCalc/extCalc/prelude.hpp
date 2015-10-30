@@ -53,6 +53,8 @@ struct gte_expr; // {expr} >= {expr}
 struct lte_expr; // {expr} <= {expr}
 struct eequ_expr; // {expr} == {expr}
 struct nequ_expr; // {expr} != {expr}
-
+//Literal
+struct int_expr; // int
+struct bool_expr; // true | false
 
 #endif

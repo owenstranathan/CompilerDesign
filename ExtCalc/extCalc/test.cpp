@@ -1,5 +1,7 @@
 #include "lexer.hpp"
 #include "symbol.hpp"
+#include "parser.hpp"
+//#include "elaborate.hpp"
 
 #include <iostream>
 #include <string>
@@ -12,15 +14,16 @@ using namespace std;
 int main()
 {
     try{
-        string input;
+        std::string input;
+        std::vector<std::string> inputs;
+        symbol_table sym_tab;
+        sym_tab.install();
         while(getline(cin, input))
         {
-            symbol_table sym_tab;
-            sym_tab.install();
             lexer lex(input, sym_tab);
-            cout << "calling getTokenStream" << endl;
             token_stream ts = lex.getTokenStream();
-            cout << "PRINTING TOKEN STREAM" << endl;
+            //parser par(ts, sym_tab);
+            //par.parse();
             while(!ts.eof())
             {
                 cout << ts.get().Symbol()->spelling() << " ";
@@ -28,9 +31,9 @@ int main()
             cout << endl;
         }
     }
-    catch(exception& error)
+    catch(exception& err)
     {
-        cout <<"Error: " << error.what() << endl;
+        cout <<"Error: " << err.what() << endl;
     }
     return 0;
 }

@@ -130,7 +130,7 @@ void lexer::Int()
         s+=lookahead;
         next();
     }
-    symbol * sym = sym_tab.insert<int_symbol>(s, &s, integer);
+    symbol * sym = sym_tab.insert(s, integer);
     push_token(sym);
 }
 

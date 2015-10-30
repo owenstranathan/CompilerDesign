@@ -6,6 +6,8 @@ struct type_visitor;
 
 #include "prelude.hpp"
 
+#include <string>
+
 //---------------------// Expression Visitor //---------------------//
 struct expr_visitor
 {
@@ -29,7 +31,15 @@ struct expr_visitor
     virtual void visit(const eequ_expr *) {} // ==
     virtual void visit(const nequ_expr *) {} // !=
 
+    //Literal
+    virtual void visit(const int_expr *) {} // int
+    virtual void visit(const bool_expr *) {} // bool
+
 };
+
+
+
+
 
 //---------------------// Type Visitor //---------------------//
 

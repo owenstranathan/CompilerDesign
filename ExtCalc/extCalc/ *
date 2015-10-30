@@ -3,7 +3,6 @@
 
 #include "prelude.hpp"
 #include "visitor.hpp"
-#include "symbol.hpp"
 
 //---------------------// Papa Expression //---------------------//
 
@@ -11,7 +10,7 @@ struct expr
 {
     virtual ~expr()
     { }
-    virtual void accept(expr_visitor&)  = 0;
+    virtual void accept(expr_visitor &)  = 0;
 };
 
 //---------------------// Unary Expressions //---------------------//
@@ -198,29 +197,43 @@ struct nequ_expr : binary_expr
 
 //---------------------// Literal Expressions //---------------------//
 
-struct int_expr :expr
+template<typename T>
+struct literal_expr : expr
 {
 public:
-    int_expr(int value) : value_(value)
+    literal_expr(T value, type* t) : value_(value)
+    {}
+
+private:
+    T value_;
+    type)
+};
+
+struct integer_expr
+{
+public:
+    integer_expr(int value) : value_(value)
     {}
 
     int value() const { return value_; }
 
-    void accept(expr_visitor & v) { v.visit(this); }
+    void accept(expr_visitor & v)
+    { v.visit(this); }
 
 private:
     int value_;
 };
 
-struct bool_expr :expr
+struct boolean_expr
 {
 public:
-    bool_expr(bool value) : value_(value)
+    boolean_expr(bool value) : value_(value)
     {}
 
     bool value() const { return value_; }
 
-    void accept(expr_visitor & v) { v.visit(this); }
+    vois accept(expr_visitor & v)
+    { v.visit(this); }
 
 private:
     bool value_;
